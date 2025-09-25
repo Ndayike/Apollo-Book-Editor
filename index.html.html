@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APOLLO BOOK EDITOR - This application was developed by Ndayikeze Apollinaire, a pragmatic communicator and seasoned IT specialist. He is actively engaged in the development of innovative applications and conducts advanced research in the field of communication technologies.</title>
+
+    <!-- Google Font: Bebas Neue (for APOLLO BOOK EDITOR title) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- style.css content starts here --- */
+        :root {
+            --primary-color: #001f3f; /* Dark Navy Blue */
+            --secondary-color: #6c757d;
+            --accent-color: #28a745; /* Green */
+            --bg-color: #f8f9fa;
+            --text-color: #343a40;
+            --border-color: #dee2e6;
+            --kirundi-green: #006b3d; /* Burundi flag green */
+            --kirundi-white: #ffffff; /* Burundi flag white */
+            --kirundi-red: #ef3340;   /* Burundi flag red */
+            --a4-width: 210mm;
+            --a4-height: 297mm;
+            --page-margin: 20mm; /* Internal padding for A4 pages */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        header {
+            background-color: var(--primary-color); /* Dark Navy Blue */
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-family: 'Bebas Neue', cursive; /* Apply custom font */
+            font-size: 3em;
+            margin: 0.2em 0;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            max-width: calc(var(--a4-width) * 1.5); /* Wider container to accommodate A4 pages + margins */
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .language-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .language-section h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .book-meta {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .book-meta input[type="text"] {
+            width: 100%;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1.2em;
+            color: var(--text-color);
+            box-sizing: border-box;
+        }
+
+        .book-meta .book-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .book-meta .book-subtitle {
+            font-size: 1.4em;
+            color: var(--secondary-color);
+        }
+
+        .book-meta input[type="text"]::placeholder {
+            color: #a0a0a0;
+            font-style: italic;
+        }
+
+        .editor-controls {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            justify-content: flex-start;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky; /* Make toolbar sticky */
+            top: 0;
+            z-index: 100; /* Ensure it stays on top */
+        }
+
+        .control-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            margin-right: 15px;
+            border-right: 1px solid var(--border-color);
+            padding-right: 15px;
+        }
+        .control-group:last-child {
+            border-right: none;
+            padding-right: 0;
+            margin-right: 0;
+        }
+
+        .editor-controls button,
+        .editor-controls select,
+        .editor-controls input[type="color"] {
+            padding: 8px 12px;
+            border: 1px solid var(--primary-color);
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            min-width: 40px;
+            text-align: center;
+            height: 38px;
+            box-sizing: border-box;
+        }
+
+        .editor-controls button:hover,
+        .editor-controls select:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .editor-controls button:active {
+            transform: translateY(0);
+        }
+
+        .editor-controls select {
+            background-color: white;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .editor-controls input[type="color"] {
+            padding: 2px;
+            height: 38px;
+            width: 45px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            min-width: unset;
+        }
+
+        .editor-controls input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .editor-controls input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 3px;
+        }
+
+        #editor-playground-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            background-color: #e0e0e0;
+            padding: 20px;
+            border-radius: 8px;
+            min-height: 500px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        /* Styles for A4-like editor pages */
+        .editor-page {
+            width: var(--a4-width);
+            height: var(--a4-height); /* Fixed height for pagination calculations */
+            position: relative; /* For footer positioning */
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+            box-sizing: border-box; /* Include padding/border in dimensions */
+            overflow: hidden; /* Crucial for visual page break effect */
+            display: flex; /* For layout of page-body and page-footer */
+            flex-direction: column;
+        }
+
+        /* NEW: Styles for the editable content area within the page */
+        .page-body {
+            flex-grow: 1; /* Occupy remaining space after header/footer */
+            padding: var(--page-margin); /* Internal margins for content */
+            overflow: hidden; /* Essential for scrollHeight to work for pagination */
+            font-size: 1.1em;
+            line-height: 1.6;
+            cursor: text;
+            box-sizing: border-box; /* Include padding in body height */
+            /* Ensure columns apply to the body, not the whole page */
+            column-count: 1; /* Default */
+            column-gap: 0;
+            text-align: left; /* Default */
+        }
+        .editor-page[data-cols="1"] .page-body { column-count: 1; column-gap: 0; }
+        .editor-page[data-cols="2"] .page-body { column-count: 2; column-gap: 20mm; }
+        .editor-page[data-cols="3"] .page-body { column-count: 3; column-gap: 15mm; }
+
+        .editor-page[data-align="left"] .page-body { text-align: left; }
+        .editor-page[data-align="center"] .page-body { text-align: center; }
+        .editor-page[data-align="right"] .page-body { text-align: right; }
+        .editor-page[data-align="justify"] .page-body { text-align: justify; }
+
+        .editor-page:focus-within {
+            box-shadow: 0 0 10px rgba(0,123,255,0.5);
+            border-color: var(--primary-color);
+        }
+
+        /* NEW: Live Page Footer Styling */
+        .page-footer {
+            /* Keep this positioned relative to .editor-page, but now within it */
+            width: 100%; /* Spans full width of page */
+            height: 40px; /* Fixed height for the footer area */
+            display: flex;
+            justify-content: flex-end; /* Align page number to right */
+            align-items: center;
+            padding: 0 20mm; /* Padding matching page margins */
+            box-sizing: border-box;
+            background-color: transparent; /* Default transparent, numbers drawn by JS */
+            z-index: 10; /* Ensure it's above content */
+            color: var(--text-color); /* Default text color */
+        }
+        .page-footer .page-number {
+            background-color: var(--accent-color); /* Green container */
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+            display: none; /* Hidden by default, toggled by JS */
+        }
+
+        .quote-block {
+            display: flex;
+            align-items: flex-start;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f1f8ff;
+            border-left: none;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .quote-block .quote-line {
+            width: 3px;
+            height: 100%;
+            min-height: 50px;
+            margin-right: 3px;
+            border-radius: 1px;
+        }
+
+        .quote-block .quote-line.green { background-color: var(--kirundi-green); }
+        .quote-block .quote-line.white { background-color: var(--kirundi-white); }
+        .quote-block .quote-line.red { background-color: var(--kirundi-red); }
+
+        .quote-block p {
+            flex-grow: 1;
+            margin: 0;
+            padding-left: 10px;
+            font-style: italic;
+            color: #555;
+            white-space: pre-wrap;
+        }
+
+        /* Image with caption styling */
+        .image-with-caption {
+            display: block;
+            margin: 1em auto;
+            text-align: center;
+            max-width: 100%;
+            height: auto;
+        }
+        .image-with-caption img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .image-with-caption figcaption {
+            font-style: italic;
+            margin-top: 0.5em;
+            color: #555;
+            font-size: 0.9em;
+            min-height: 1.5em;
+        }
+
+        /* Full Page Design styling */
+        .full-page-design {
+            /* Size relative to .page-body now */
+            width: 100%;
+            min-height: calc(100% - 2em); /* Adjust to fill available page-body height */
+            background-color: #f0f8ff; /* Fallback/default if no image */
+            border: 2px dashed var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin: 1em auto; /* Centered within page-body */
+            box-sizing: border-box;
+            cursor: pointer;
+            page-break-after: always;
+            padding: 1em;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .full-page-design:focus-within {
+             outline: 2px solid var(--accent-color);
+        }
+        .full-page-design h4 {
+            margin: 0.5em 0;
+            font-size: 1.2em;
+            color: inherit;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .full-page-design p {
+            font-size: 0.8em;
+            color: inherit;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+
+        .covers-section, .export-preview-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .covers-section h2, .export-preview-section h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .cover-slots {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cover-slot {
+            flex: 1;
+            min-width: 250px;
+            border: 2px dashed var(--border-color);
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #fefefe;
+        }
+
+        .cover-slot h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+        }
+
+        .cover-slot input[type="file"] {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .cover-preview {
+            width: 100%;
+            height: 200px;
+            background-color: #e9ecef;
+            border: 1px solid var(--border-color);
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6c757d;
+            font-style: italic;
+            overflow: hidden;
+        }
+
+        .cover-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .preview-window {
+            min-height: 300px;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            background-color: #fefefe;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .export-btn {
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            padding: 15px 25px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        .export-btn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* Styles specifically for the content to be captured by html2canvas */
+        .pdf-content-wrapper {
+            width: var(--a4-width);
+            min-height: var(--a4-height);
+            padding: var(--page-margin);
+            background-color: white;
+            color: black;
+            box-sizing: border-box;
+        }
+        .pdf-content-wrapper .book-title-for-pdf {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 0.5em;
+            color: black;
+        }
+        .pdf-content-wrapper .book-subtitle-for-pdf {
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 1.5em;
+            color: #333;
+        }
+        .pdf-content-wrapper .editor-page .page-body {
+            border: none;
+            box-shadow: none;
+            min-height: auto;
+            padding: 0;
+            margin-bottom: 0;
+            background-color: white;
+            overflow: visible;
+            max-height: none;
+        }
+
+        .pdf-cover-capture {
+            width: var(--a4-width);
+            height: var(--a4-height);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            box-sizing: border-box;
+        }
+        .pdf-cover-capture img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* PDF specific styling for full-page-design blocks */
+        .pdf-content-wrapper .full-page-design {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: var(--a4-width);
+            min-height: var(--a4-height);
+            padding: var(--page-margin);
+            box-sizing: border-box;
+            color: #333;
+            text-shadow: none;
+        }
+         /* Text for context menu's general design block in PDF */
+        .pdf-content-wrapper .full-page-design h4,
+        .pdf-content-wrapper .full-page-design p {
+            color: black !important;
+            text-shadow: none !important;
+        }
+
+
+        .pdf-content-wrapper .cover-page-title {
+            text-align: center;
+            font-size: 2em;
+            margin-top: 50mm;
+            color: black;
+        }
+        .hide-for-pdf {
+            display: none !important;
+        }
+
+        .context-menu {
+            position: fixed;
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            padding: 5px;
+            border-radius: 6px;
+            min-width: 150px;
+        }
+        .context-menu button {
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.95em;
+            color: var(--text-color);
+            transition: background-color 0.2s ease;
+            border-radius: 4px;
+        }
+        .context-menu button:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            .editor-controls {
+                flex-direction: row;
+                justify-content: center;
+                gap: 5px;
+                padding: 10px;
+            }
+            .control-group {
+                border-right: none;
+                padding-right: 0;
+                margin-right: 0;
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 5px;
+                flex-wrap: wrap;
+            }
+            .control-group:last-child {
+                margin-bottom: 0;
+            }
+            .cover-slots {
+                flex-direction: column;
+                align-items: center;
+            }
+            .cover-slot {
+                width: 90%;
+            }
+            .editor-page {
+                width: 95vw;
+                height: calc(95vw * (297 / 210));
+                padding: 0; /* Page-body will handle padding */
+            }
+            .page-body {
+                padding: 10px; /* Smaller padding for mobile */
+            }
+            .page-footer {
+                padding: 0 10px;
+            }
+            .container {
+                 padding: 0 10px;
+            }
+             .full-page-design {
+                width: calc(100% - 2em);
+                min-height: calc(100% - 2em);
+            }
+        }
+        /* --- style.css content ends here --- */
+    </style>
+    <!-- Placeholder for local jsPDF library: Download jspdf.umd.min.js and place in 'js/' folder -->
+    <script src="js/jspdf.umd.min.js"></script>
+    <!-- Placeholder for local html2canvas library: Download html2canvas.min.js and place in 'js/' folder -->
+    <script src="js/html2canvas.min.js"></script>
+    <!-- Placeholder for local DOMPurify library: Download purify.min.js and place in 'js/' folder -->
+    <script src="js/purify.min.js"></script>
+</head>
+<body>
+    <header class="hide-for-pdf-temp">
+        <h1>APOLLO BOOK EDITOR</h1>
+        <p>English Book Editing Application</p>
+    </header>
+
+    <div class="container">
+        <div id="editor-section">
+            <div id="english-section" class="language-section active">
+                <h2>English Editor</h2>
+                <div class="book-meta hide-for-pdf-temp">
+                    <input type="text" class="book-title" id="bookTitle" placeholder="Enter Book Title" value="My Awesome Book">
+                    <input type="text" class="book-subtitle" id="bookSubtitle" placeholder="Enter Book Subtitle (Optional)" value="A journey through words.">
+                </div>
+                <!-- Consolidated Editor Controls -->
+                <div class="editor-controls hide-for-pdf-temp">
+                    <div class="control-group">
+                        <button class="layout-btn" data-cols="1" title="1 Column Layout">1 Col</button>
+                        <button class="layout-btn" data-cols="2" title="2 Column Layout">2 Cols</button>
+                        <button class="layout-btn" data-cols="3" title="3 Column Layout">3 Cols</button>
+                    </div>
+                    <div class="control-group">
+                        <button class="align-btn" data-align="left" title="Align Left">Left</button>
+                        <button class="align-btn" data-align="center" title="Align Center">Center</button>
+                        <button class="align-btn" data-align="right" title="Align Right">Right</button>
+                        <button class="align-btn" data-align="justify" title="Justify">Justify</button>
+                    </div>
+                    <div class="control-group">
+                        <button class="format-btn" data-format="bold" title="Bold">B</button>
+                        <button class="format-btn" data-format="italic" title="Italic">I</button>
+                        <button class="format-btn" data-format="underline" title="Underline">U</button>
+                        <button class="format-btn" data-format="capitalize" title="Toggle Capitalization">Aa</button>
+                        <select class="font-style-select" title="Font Style">
+                            <option value="Arial, sans-serif">Sans-Serif (Arial)</option>
+                            <option value="Georgia, serif">Serif (Georgia)</option>
+                            <option value="Times New Roman, serif">Times New Roman</option>
+                        </select>
+                        <select class="point-size-select" title="Font Size">
+                            <option value="3">12pt</option>
+                            <option value="4">14pt</option>
+                            <option value="5">16pt</option>
+                            <option value="6">18pt</option>
+                            <option value="7">24pt</option>
+                        </select>
+                        <input type="color" class="color-picker" value="#000000" title="Text Color">
+                    </div>
+                    <div class="control-group">
+                        <button class="structure-btn" data-structure="bullet" title="Bullet Points">Bullet Points</button>
+                        <button class="structure-btn" data-structure="quote" title="Insert Quote">Insert Quote</button>
+                        <button id="insertImageBtn" title="Insert Image from Computer">Insert Image</button>
+                        <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+                        <button id="insertBgDesignBtn" title="Insert Full Page Background Design">Insert BG Design</button>
+                        <input type="file" id="bgDesignFileInput" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="control-group">
+                        <button class="page-btn" id="addPageBtn" title="Add New Page">Add Page</button>
+                        <button class="page-btn" id="removePageBtn" title="Remove Page">Remove Page</button>
+                        <!-- NEW: Toggle Live Page Numbers Button -->
+                        <button class="page-btn" id="toggleLivePageNumbersBtn" title="Toggle Live Page Numbers">Enable Live Page Numbers</button>
+                        <!-- END NEW -->
+                    </div>
+                     <div class="control-group">
+                        <button id="saveProjectBtn" title="Save Project">Save Project</button>
+                        <button id="openProjectBtn" title="Open Project">Open Project</button>
+                        <input type="file" id="openProjectFile" accept=".json" style="display: none;">
+                    </div>
+                </div>
+                <!-- NEW: Editor Playground Container for A4 pages -->
+                <div id="editor-playground-container">
+                    <div class="editor-page" data-page-index="0">
+                        <div class="page-body" contenteditable="true">
+                            <p>This is the first paragraph of your book. You can type and format text directly here. Use the tools above to make it <strong>bold</strong>, <em>italic</em>, or <u>underlined</u>. Change font styles and sizes. You can even change the text <span style="color: #ff0000;">color</span>.</p>
+                            <p>Remember to structure your content using bullet points or quotes for better readability. The layout options can help you visualize how your text will appear on the page.</p>
+                            <div class="quote-block">
+                                <div class="quote-line green"></div>
+                                <div class="quote-line white"></div>
+                                <div class="quote-line red"></div>
+                                <p contenteditable="true">"This is an example quotation with Burundi flag colors, demonstrating the rich formatting capabilities of APOLLO BOOK EDITOR. Let your creativity flow!"</p>
+                            </div>
+                            <p>This paragraph comes after the quote. You can continue adding as much content as you need. The PDF export will attempt to render all of this beautifully into a downloadable file. Experiment with different column layouts to see how your content is presented. For example, selecting "2 Cols" will visually split this text into two columns (though precise PDF rendering of columns can be complex).</p>
+                            <p>Here's another paragraph to make the content longer and test multi-page PDF generation. The application aims to provide a seamless editing experience for writers, editors, and designers alike, ensuring high-quality output every time. We are constantly improving features to meet all your publishing needs. You can imagine adding images, complex tables, and more interactive elements in a full-featured version of this application.</p>
+                            <p>Final paragraph before the end. Enjoy creating your next masterpiece with APOLLO BOOK EDITOR!</p>
+                        </div>
+                        <div class="page-footer hide-for-pdf-temp">
+                            <span class="page-number"></span>
+                        </div>
+                    </div>
+                </div>
+                <!-- END NEW -->
+            </div>
+        </div>
+
+        <section class="covers-section hide-for-pdf-temp">
+            <h2>Book Covers</h2>
+            <div class="cover-slots">
+                <div class="cover-slot front">
+                    <h3>Front Cover</h3>
+                    <input type="file" accept="image/*" id="frontCoverInput">
+                    <div class="cover-preview" id="frontCoverPreview"></div>
+                </div>
+                <div class="cover-slot back">
+                    <h3>Back Cover</h3>
+                    <input type="file" accept="image/*" id="backCoverInput">
+                    <div class="cover-preview" id="backCoverPreview"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="export-preview-section hide-for-pdf-temp">
+            <h2>Preview & Export</h2>
+            <div class="preview-window">
+                <h3>Book Preview</h3>
+                <p>Your entire book will be rendered here. (Note: The A4-paged editor itself acts as a live preview. This window is a placeholder for a more complex pre-export rendering.)</p>
+            </div>
+            <button class="export-btn">Export as PDF</button>
+        </section>
+    </div>
+
+    <!-- Custom Context Menu (display: none by default in CSS) -->
+    <div id="custom-context-menu" class="context-menu">
+        <button id="insertDesignOption">Insert Design</button> <!-- This remains for generic editable design block -->
+        <button id="closeContextMenu">Close</button>
+    </div>
+
+    <!-- This file input is not explicitly used by the context menu's insertDesignOption,
+         but is kept here as a fallback or for other potential uses. -->
+    <input type="file" id="contextImageFileInput" accept="image/*" style="display: none;">
+
+
+    <script>
+        /* --- script.js content starts here --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            const editorPlaygroundContainer = document.getElementById('editor-playground-container');
+            const bookTitleInput = document.getElementById('bookTitle');
+            const bookSubtitleInput = document.getElementById('bookSubtitle');
+            const frontCoverInput = document.getElementById('frontCoverInput');
+            const backCoverInput = document.getElementById('backCoverInput');
+            const frontCoverPreview = document.getElementById('frontCoverPreview');
+            const backCoverPreview = document.getElementById('backCoverPreview');
+            const addPageBtn = document.getElementById('addPageBtn');
+            const removePageBtn = document.getElementById('removePageBtn');
+            const saveProjectBtn = document.getElementById('saveProjectBtn');
+            const openProjectBtn = document.getElementById('openProjectBtn');
+            const openProjectFile = document.getElementById('openProjectFile');
+
+            // Toolbar Insert Image button elements
+            const insertImageBtn = document.getElementById('insertImageBtn');
+            const imageFileInput = document.getElementById('imageFileInput');
+
+            // Toolbar Insert Background Design button elements
+            const insertBgDesignBtn = document.getElementById('insertBgDesignBtn');
+            const bgDesignFileInput = document.getElementById('bgDesignFileInput');
+
+            // Context menu elements
+            const customContextMenu = document.getElementById('custom-context-menu');
+            const insertDesignOption = document.getElementById('insertDesignOption');
+            const closeContextMenu = document.getElementById('closeContextMenu');
+
+            // NEW: Toggle Live Page Numbers Button
+            const toggleLivePageNumbersBtn = document.getElementById('toggleLivePageNumbersBtn');
+
+            let lastSelectionRange = null; // To store cursor position for context menu insertions
+
+            // State for live page numbers visibility. PDF output will always have numbers.
+            let showLivePageNumbers = false;
+
+            let pageIndex = 0; // To keep track of editor pages
+
+            // --- Helper Functions for Page Management ---
+            function createNewEditorPage(content = '') {
+                const newPage = document.createElement('div');
+                newPage.classList.add('editor-page');
+                newPage.setAttribute('data-page-index', pageIndex++);
+                newPage.innerHTML = `
+                    <div class="page-body" contenteditable="true">${content || '<p><br></p>'}</div>
+                    <div class="page-footer hide-for-pdf-temp">
+                        <span class="page-number"></span>
+                    </div>
+                `;
+                editorPlaygroundContainer.appendChild(newPage);
+                setupPageEventListeners(newPage); // Attach event listeners
+                return newPage;
+            }
+
+            function setupPageEventListeners(pageElement) {
+                const pageBody = pageElement.querySelector('.page-body');
+
+                // Handle basic text overflow to next page
+                pageBody.addEventListener('input', (event) => {
+                    const currentPageBody = event.target;
+                    checkAndPaginate(currentPageBody.closest('.editor-page'));
+                });
+
+                // Handle paste event - preserving original format
+                pageBody.addEventListener('paste', (event) => {
+                    event.preventDefault();
+                    const text = event.clipboardData.getData('text/plain');
+                    const html = event.clipboardData.getData('text/html');
+
+                    if (html) {
+                        const sanitizedHtml = DOMPurify.sanitize(html, {
+                            USE_PROFILES: { html: true },
+                            ALLOWED_TAGS: ['p', 'span', 'div', 'b', 'i', 'u', 'strong', 'em', 'sub', 'sup', 'ul', 'ol', 'li', 'br', 'figure', 'figcaption', 'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'blockquote'],
+                            ALLOWED_ATTR: ['style', 'class', 'src', 'alt', 'href', 'title'],
+                        });
+                        document.execCommand('insertHTML', false, sanitizedHtml);
+                    } else {
+                        document.execCommand('insertText', false, text);
+                    }
+                    const currentPage = document.activeElement.closest('.editor-page');
+                    if (currentPage) {
+                        checkAndPaginate(currentPage);
+                    }
+                });
+
+                // Context menu handling for editor pages (listen on the pageBody)
+                pageBody.addEventListener('contextmenu', (event) => {
+                    event.preventDefault(); // Prevent default browser context menu
+                    lastSelectionRange = window.getSelection().getRangeAt(0); // Save current cursor position
+
+                    customContextMenu.style.display = 'flex';
+                    customContextMenu.style.left = `${event.clientX}px`;
+                    customContextMenu.style.top = `${event.clientY}px`;
+                });
+
+
+                // Set initial data-cols and data-align from the first page if available
+                const firstPage = editorPlaygroundContainer.querySelector('.editor-page');
+                if (firstPage) {
+                    pageElement.setAttribute('data-cols', firstPage.getAttribute('data-cols') || '1');
+                    pageElement.setAttribute('data-align', firstPage.getAttribute('data-align') || 'left');
+                }
+            }
+
+            // A basic text overflow and pagination function.
+            function checkAndPaginate(currentPageElement) {
+                if (!currentPageElement || !currentPageElement.classList.contains('editor-page')) return;
+
+                const currentPageBody = currentPageElement.querySelector('.page-body');
+                const pageFooter = currentPageElement.querySelector('.page-footer');
+
+                // Calculate available content height dynamically
+                const pageBodyPadding = parseFloat(getComputedStyle(currentPageBody).paddingTop) + parseFloat(getComputedStyle(currentPageBody).paddingBottom);
+                const maxContentHeight = currentPageElement.clientHeight - pageFooter.offsetHeight - pageBodyPadding; // Total page height - footer height - pageBody's own padding
+
+                // Ensure current page has content. If it's a new page with just a <br>, don't paginate yet.
+                if (currentPageBody.textContent.trim() === '' && currentPageBody.children.length === 1 && currentPageBody.firstElementChild.tagName === 'P' && currentPageBody.firstElementChild.innerHTML.trim() === '<br>') {
+                    return;
+                }
+
+                const currentScrollHeight = currentPageBody.scrollHeight;
+
+                // Overflow detection
+                if (currentScrollHeight > maxContentHeight) {
+                    let nextPageIndex = parseInt(currentPageElement.dataset.pageIndex) + 1;
+                    let nextPageElement = editorPlaygroundContainer.querySelector(`.editor-page[data-page-index="${nextPageIndex}"]`);
+                    if (!nextPageElement) {
+                        nextPageElement = createNewEditorPage();
+                        editorPlaygroundContainer.insertBefore(nextPageElement, currentPageElement.nextElementSibling);
+                    }
+                    const nextPageBody = nextPageElement.querySelector('.page-body');
+
+                    // Move content from current page to next until it fits
+                    let lastChild = currentPageBody.lastElementChild;
+                    while (lastChild && currentPageBody.scrollHeight > maxContentHeight) {
+                        nextPageBody.prepend(lastChild);
+                        lastChild = currentPageBody.lastElementChild;
+                    }
+                    // Re-check next page for overflow
+                    checkAndPaginate(nextPageElement);
+
+                } else {
+                    // Underflow detection: check if content from next page can move back to current page
+                    let nextPageIndex = parseInt(currentPageElement.dataset.pageIndex) + 1;
+                    let nextPageElement = editorPlaygroundContainer.querySelector(`.editor-page[data-page-index="${nextPageIndex}"]`);
+
+                    if (nextPageElement && nextPageElement.querySelector('.page-body').firstElementChild) {
+                        const nextPageBody = nextPageElement.querySelector('.page-body');
+                        const firstChildOfNext = nextPageBody.firstElementChild;
+                        // Temporarily move content from next page to current to see if it fits
+                        currentPageBody.appendChild(firstChildOfNext);
+
+                        if (currentPageBody.scrollHeight <= maxContentHeight) {
+                            // If it fits, keep it and re-check current page for more space
+                            checkAndPaginate(currentPageElement);
+                        } else {
+                            // Doesn't fit, move it back
+                            nextPageBody.prepend(firstChildOfNext);
+                        }
+                    }
+                }
+                removeEmptyPages(); // Clean up any pages that became truly empty
+                reindexPages(); // Ensure page indices are sequential after add/remove/move
+            }
+
+            // Removes empty pages from the end, ensuring at least one page always exists
+            function removeEmptyPages() {
+                const pages = Array.from(editorPlaygroundContainer.querySelectorAll('.editor-page'));
+                for (let i = pages.length - 1; i > 0; i--) { // Start from second page, don't remove first
+                    const pageBody = pages[i].querySelector('.page-body');
+                    const isEmpty = pageBody.textContent.trim() === '' && (pageBody.children.length === 0 || (pageBody.children.length === 1 && pageBody.firstElementChild.tagName === 'P' && pageBody.firstElementChild.innerHTML.trim() === '<br>'));
+                    if (isEmpty) {
+                        editorPlaygroundContainer.removeChild(pages[i]);
+                    }
+                }
+                if (editorPlaygroundContainer.children.length === 0) {
+                    createNewEditorPage();
+                }
+            }
+
+            // Re-indexes pages to maintain correct data-page-index attributes AND updates page numbers
+            function reindexPages() {
+                Array.from(editorPlaygroundContainer.querySelectorAll('.editor-page')).forEach((page, index) => {
+                    page.setAttribute('data-page-index', index);
+                    const pageNumberSpan = page.querySelector('.page-number');
+                    if (pageNumberSpan) {
+                        if (showLivePageNumbers) {
+                            pageNumberSpan.textContent = `Page ${index + 1}`;
+                            pageNumberSpan.style.display = 'block';
+                        } else {
+                            pageNumberSpan.style.display = 'none';
+                        }
+                    }
+                });
+                pageIndex = editorPlaygroundContainer.children.length; // Update global pageIndex
+            }
+
+            // Initial page setup (re-index and set numbers for initial page)
+            editorPlaygroundContainer.querySelectorAll('.editor-page').forEach(page => setupPageEventListeners(page));
+            reindexPages(); // Call once initially to set page number for the first page
+
+            // --- Editor Controls (Toolbar) ---
+
+            document.querySelectorAll('.format-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const format = button.dataset.format;
+                    const currentPage = document.activeElement.closest('.editor-page');
+                    if (currentPage) {
+                        if (format === 'capitalize') {
+                            const selection = window.getSelection();
+                            if (selection.rangeCount) {
+                                const range = selection.getRangeAt(0);
+                                const selectedText = range.toString();
+                                if (selectedText.length > 0) {
+                                    if (selectedText === selectedText.toUpperCase()) {
+                                        document.execCommand('insertHTML', false, selectedText.toLowerCase());
+                                    } else {
+                                        document.execCommand('insertHTML', false, selectedText.toUpperCase());
+                                    }
+                                } else {
+                                     alert("Please select some text to toggle capitalization.");
+                                }
+                            }
+                        } else {
+                            document.execCommand(format, false, null);
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('.font-style-select').forEach(select => {
+                select.addEventListener('change', (event) => {
+                    const font = event.target.value;
+                    const currentPage = document.activeElement.closest('.editor-page');
+                    if (currentPage) {
+                        document.execCommand('fontName', false, font);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.point-size-select').forEach(select => {
+                select.addEventListener('change', (event) => {
+                    const size = event.target.value;
+                    const currentPage = document.activeElement.closest('.editor-page');
+                    if (currentPage) {
+                        document.execCommand('fontSize', false, size);
+                    }
+                });
+            });
+
+            document.querySelector('.color-picker').addEventListener('input', (event) => {
+                const color = event.target.value;
+                const currentPage = document.activeElement.closest('.editor-page');
+                if (currentPage) {
+                    document.execCommand('foreColor', false, color);
+                }
+            });
+
+            document.querySelectorAll('.layout-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const currentPage = document.activeElement.closest('.editor-page');
+                    if (currentPage) {
+                        currentPage.removeAttribute('data-cols');
+                        currentPage.setAttribute('data-cols', button.dataset.cols);
+                        checkAndPaginate(currentPage); // Re-check pagination after layout change
+                    }
+                });
+            });
+
+            document.querySelectorAll('.align-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const currentPage = document.activeElement.closest('.editor-page');
+                    if (currentPage) {
+                        document.execCommand('justify' + button.dataset.align, false, null);
+                    }
+                });
+            });
+
+            document.querySelector('.structure-btn[data-structure="bullet"]').addEventListener('click', () => {
+                const currentPage = document.activeElement.closest('.editor-page');
+                if (currentPage) {
+                    document.execCommand('insertUnorderedList', false, null);
+                    checkAndPaginate(currentPage);
+                }
+            });
+
+            document.querySelector('.structure-btn[data-structure="quote"]').addEventListener('click', () => {
+                const currentPage = document.activeElement.closest('.editor-page');
+                const currentPageBody = currentPage ? currentPage.querySelector('.page-body') : null;
+
+                if (currentPageBody) {
+                    const quoteHTML = `
+                        <div class="quote-block">
+                            <div class="quote-line green"></div>
+                            <div class="quote-line white"></div>
+                            <div class="quote-line red"></div>
+                            <p contenteditable="true">"Insert your quotation here..."</p>
+                        </div>`;
+
+                    const selection = window.getSelection();
+                    if (selection.rangeCount) {
+                        const range = selection.getRangeAt(0);
+                        range.deleteContents();
+                        const div = document.createElement('div');
+                        div.innerHTML = quoteHTML.trim();
+                        const fragment = document.createDocumentFragment();
+                        let node;
+                        while ((node = div.firstChild)) {
+                            fragment.appendChild(node);
+                        }
+                        range.insertNode(fragment);
+                        range.collapse(false);
+                    } else {
+                        currentPageBody.insertAdjacentHTML('beforeend', quoteHTML);
+                    }
+                    checkAndPaginate(currentPage);
+                }
+            });
+
+            // Toolbar Insert Image Button Logic
+            insertImageBtn.addEventListener('click', () => {
+                imageFileInput.click();
+            });
+
+            imageFileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                const currentPage = document.activeElement.closest('.editor-page');
+                const currentPageBody = currentPage ? currentPage.querySelector('.page-body') : null;
+
+                if (file && currentPageBody) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageUrl = e.target.result;
+                        const imageHtml = `
+                            <figure class="image-with-caption">
+                                <img src="${imageUrl}" alt="Inserted Image">
+                                <figcaption contenteditable="true"><em>Image caption here...</em></figcaption>
+                            </figure>`;
+
+                        const selection = window.getSelection();
+                        if (selection.rangeCount) {
+                            const range = selection.getRangeAt(0);
+                            range.deleteContents();
+                            const div = document.createElement('div');
+                            div.innerHTML = imageHtml.trim();
+                            const fragment = document.createDocumentFragment();
+                            let node;
+                            while ((node = div.firstChild)) {
+                                fragment.appendChild(node);
+                            }
+                            range.insertNode(fragment);
+                            range.collapse(false);
+                        } else {
+                            currentPageBody.insertAdjacentHTML('beforeend', imageHtml);
+                        }
+
+                        event.target.value = '';
+                        checkAndPaginate(currentPage);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Toolbar Insert Background Design Button Logic
+            insertBgDesignBtn.addEventListener('click', () => {
+                bgDesignFileInput.click();
+            });
+
+            bgDesignFileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                const currentPage = document.activeElement.closest('.editor-page');
+                const currentPageBody = currentPage ? currentPage.querySelector('.page-body') : null;
+
+                if (file && currentPageBody) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const imageUrl = e.target.result;
+                        const designHtml = `
+                            <div class="full-page-design" contenteditable="true" style="background-image: url('${imageUrl}');">
+                                <h4>Full Page Design Title</h4>
+                                <p>Describe your background image here, or add any text overlay you wish.</p>
+                                <p>This block will try to occupy a full page for printing.</p>
+                            </div>`;
+
+                        const selection = window.getSelection();
+                        if (selection.rangeCount) {
+                            const range = selection.getRangeAt(0);
+                            range.deleteContents();
+                            const div = document.createElement('div');
+                            div.innerHTML = designHtml.trim();
+                            const fragment = document.createDocumentFragment();
+                            let node;
+                            while ((node = div.firstChild)) {
+                                fragment.appendChild(node);
+                            }
+                            range.insertNode(fragment);
+                            range.collapse(false);
+                        } else {
+                            currentPageBody.insertAdjacentHTML('beforeend', designHtml);
+                        }
+
+                        event.target.value = '';
+                        checkAndPaginate(currentPage);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+
+            // --- Page Control Buttons ---
+            addPageBtn.addEventListener('click', () => {
+                const newPage = createNewEditorPage();
+                newPage.focus();
+                newPage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                reindexPages(); // Update numbers
+            });
+
+            removePageBtn.addEventListener('click', () => {
+                const pages = editorPlaygroundContainer.querySelectorAll('.editor-page');
+                if (pages.length > 1) {
+                    const lastPage = pages[pages.length - 1];
+                    editorPlaygroundContainer.removeChild(lastPage);
+                    const newLastPage = editorPlaygroundContainer.lastElementChild;
+                    if (newLastPage) newLastPage.focus();
+                    reindexPages(); // Update numbers
+                } else {
+                    alert('Cannot remove the last page. An editor needs at least one page!');
+                }
+            });
+
+            // NEW: Toggle Live Page Numbers functionality
+            toggleLivePageNumbersBtn.addEventListener('click', () => {
+                showLivePageNumbers = !showLivePageNumbers;
+                if (showLivePageNumbers) {
+                    toggleLivePageNumbersBtn.textContent = 'Disable Live Page Numbers';
+                    toggleLivePageNumbersBtn.style.backgroundColor = 'var(--secondary-color)';
+                } else {
+                    toggleLivePageNumbersBtn.textContent = 'Enable Live Page Numbers';
+                    toggleLivePageNumbersBtn.style.backgroundColor = 'var(--primary-color)';
+                }
+                reindexPages(); // Re-render page numbers based on new state
+                alert(`Live page numbers are now ${showLivePageNumbers ? 'ENABLED' : 'DISABLED'}. PDF export will always include page numbers.`);
+            });
+
+
+            // --- Custom Context Menu Actions ---
+            insertDesignOption.addEventListener('click', () => {
+                customContextMenu.style.display = 'none';
+                const currentPage = document.activeElement.closest('.editor-page');
+                const currentPageBody = currentPage ? currentPage.querySelector('.page-body') : null;
+
+                if (lastSelectionRange && currentPageBody) {
+                    const designHtml = `
+                        <div class="full-page-design" contenteditable="true">
+                            <h4>Generic Full Page Design Block</h4>
+                            <p>Edit this design content. This block is intended to occupy a full page for visual separation.</p>
+                            <p>You can replace this with an image or more structured HTML if needed.</p>
+                        </div>`;
+
+                    lastSelectionRange.deleteContents();
+                    const div = document.createElement('div');
+                    div.innerHTML = designHtml.trim();
+                    const fragment = document.createDocumentFragment();
+                    let node;
+                    while ((node = div.firstChild)) {
+                        fragment.appendChild(node);
+                    }
+                    lastSelectionRange.insertNode(fragment);
+                    lastSelectionRange.collapse(false);
+
+                    checkAndPaginate(currentPage);
+                }
+            });
+
+            closeContextMenu.addEventListener('click', () => {
+                customContextMenu.style.display = 'none';
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!customContextMenu.contains(event.target) && customContextMenu.style.display === 'flex') {
+                    customContextMenu.style.display = 'none';
+                }
+            });
+
+
+            // --- Cover Image Previews ---
+            const setupCoverPreview = (inputElement, previewElement) => {
+                inputElement.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            previewElement.innerHTML = `<img src="${e.target.result}" alt="Cover Preview">`;
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewElement.innerHTML = '';
+                    }
+                });
+            };
+
+            setupCoverPreview(frontCoverInput, frontCoverPreview);
+            setupCoverPreview(backCoverInput, backCoverPreview);
+
+            function loadImageToPreview(dataUrl, previewElement) {
+                if (dataUrl) {
+                    previewElement.innerHTML = `<img src="${dataUrl}" alt="Cover Preview">`;
+                } else {
+                    previewElement.innerHTML = '';
+                }
+            }
+
+
+            // --- Save Project Functionality ---
+            saveProjectBtn.addEventListener('click', () => {
+                const editorPagesContent = Array.from(editorPlaygroundContainer.querySelectorAll('.editor-page')).map(page => ({
+                    html: page.querySelector('.page-body').innerHTML, // Save content from page-body
+                    cols: page.getAttribute('data-cols'),
+                    align: page.getAttribute('data-align')
+                }));
+
+                const projectData = {
+                    title: bookTitleInput.value,
+                    subtitle: bookSubtitleInput.value,
+                    editorPages: editorPagesContent,
+                    frontCover: frontCoverPreview.querySelector('img') ? frontCoverPreview.querySelector('img').src : null,
+                    backCover: backCoverPreview.querySelector('img') ? backCoverPreview.querySelector('img').src : null,
+                    showLivePageNumbers: showLivePageNumbers // Save the state of live page numbers toggle
+                };
+
+                const dataStr = JSON.stringify(projectData, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${bookTitleInput.value.replace(/[^a-z0-9]/gi, '_') || 'ApolloBookProject'}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                alert('Project saved successfully!');
+            });
+
+            // --- Open Project Functionality ---
+            openProjectBtn.addEventListener('click', () => {
+                openProjectFile.click();
+            });
+
+            openProjectFile.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const loadedData = JSON.parse(e.target.result);
+                            bookTitleInput.value = loadedData.title || '';
+                            bookSubtitleInput.value = loadedData.subtitle || '';
+
+                            editorPlaygroundContainer.innerHTML = '';
+                            pageIndex = 0;
+
+                            if (loadedData.editorPages && loadedData.editorPages.length > 0) {
+                                loadedData.editorPages.forEach(pageData => {
+                                    const newPage = createNewEditorPage(pageData.html); // Pass content to page-body
+                                    if (pageData.cols) newPage.setAttribute('data-cols', pageData.cols);
+                                    if (pageData.align) newPage.setAttribute('data-align', pageData.align);
+                                });
+                            } else {
+                                createNewEditorPage();
+                            }
+                            reindexPages(); // Ensure correct indexing and page numbers after loading
+
+                            loadImageToPreview(loadedData.frontCover, frontCoverPreview);
+                            loadImageToPreview(loadedData.backCover, backCoverPreview);
+
+                            // Restore state of live page numbers toggle
+                            showLivePageNumbers = loadedData.showLivePageNumbers === true;
+                            if (showLivePageNumbers) {
+                                toggleLivePageNumbersBtn.textContent = 'Disable Live Page Numbers';
+                                toggleLivePageNumbersBtn.style.backgroundColor = 'var(--secondary-color)';
+                            } else {
+                                toggleLivePageNumbersBtn.textContent = 'Enable Live Page Numbers';
+                                toggleLivePageNumbersBtn.style.backgroundColor = 'var(--primary-color)';
+                            }
+                            reindexPages(); // Re-apply visibility based on loaded state
+
+                            alert('Project opened successfully!');
+                        } catch (error) {
+                            console.error('Error parsing project file:', error);
+                            alert('Failed to open project. Invalid file format.');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+
+            // --- PDF Export Functionality ---
+            document.querySelector('.export-btn').addEventListener('click', async () => {
+                document.querySelectorAll('.hide-for-pdf-temp').forEach(el => el.classList.add('hide-for-pdf'));
+
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = pdf.internal.pageSize.getHeight();
+                const footerHeight = 10;
+                const footerMargin = 10;
+
+
+                // --- Function to capture and add content to PDF ---
+                async function captureAndAddContent(element, addPageToPdf = true, margins = true) {
+                    const tempWrapper = document.createElement('div');
+                    if (margins) {
+                        tempWrapper.classList.add('pdf-content-wrapper'); // Has padding
+                    } else {
+                        // For full bleed elements like covers, temporarily set dimensions to match PDF exactly
+                        tempWrapper.style.width = `${pdfWidth}mm`;
+                        tempWrapper.style.height = `${pdfHeight}mm`;
+                        tempWrapper.style.display = 'flex';
+                        tempWrapper.style.justifyContent = 'center';
+                        tempWrapper.style.alignItems = 'center';
+                        tempWrapper.style.backgroundColor = 'white';
+                        tempWrapper.style.boxSizing = 'border-box';
+                    }
+                    tempWrapper.style.position = 'absolute';
+                    tempWrapper.style.left = '-9999px';
+                    tempWrapper.style.top = '-9999px';
+                    tempWrapper.appendChild(element.cloneNode(true));
+
+                    document.body.appendChild(tempWrapper);
+
+                    const canvas = await html2canvas(tempWrapper, {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        windowWidth: tempWrapper.offsetWidth,
+                        windowHeight: tempWrapper.offsetHeight,
+                        x: 0,
+                        y: 0,
+                    });
+
+                    document.body.removeChild(tempWrapper);
+
+                    const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                    const imgProps = pdf.getImageProperties(imgData);
+                    const canvasHeight = imgProps.height;
+                    const canvasWidth = imgProps.width;
+
+                    const imgPdfWidth = pdfWidth;
+                    const imgPdfHeight = (canvasHeight * imgPdfWidth) / canvasWidth;
+
+                    let heightLeft = imgPdfHeight;
+                    let position = 0;
+
+                    if (pdf.internal.getNumberOfPages() > 1 || (!addPageToPdf && pdf.internal.getNumberOfPages() === 1)) {
+                         if (addPageToPdf) { // For content pages, always add a new page if not the very first.
+                            pdf.addPage();
+                         }
+                    } else if (pdf.internal.getNumberOfPages() === 1 && addPageToPdf && margins) {
+                        // This handles the very first content that's not a cover and needs a new page.
+                        // pdf.addPage() is implicitly called by jspdf if no content is added yet.
+                    } else if (pdf.internal.getNumberOfPages() === 0 && addPageToPdf) {
+                         // This is the first page of the PDF being added. No explicit addPage() here.
+                    }
+
+                    pdf.addImage(imgData, 'JPEG', 0, 0, imgPdfWidth, imgPdfHeight);
+                    heightLeft -= pdfHeight;
+
+                    while (heightLeft > -1) {
+                        position = imgPdfHeight - heightLeft;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'JPEG', 0, -position, imgPdfWidth, imgPdfHeight);
+                        heightLeft -= pdfHeight;
+                    }
+                }
+
+                pdf.deletePage(1); // Remove the initial blank page jsPDF creates by default if any
+
+
+                // 1. Add Front Cover (Full bleed)
+                const frontCoverImg = frontCoverPreview.querySelector('img');
+                if (frontCoverImg) {
+                    const coverElement = document.createElement('div');
+                    coverElement.innerHTML = `<img src="${frontCoverImg.src}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
+                    await captureAndAddContent(coverElement, true, false);
+                }
+
+                // 2. Add Title and Subtitle (With margins)
+                const titleSubtitleElement = document.createElement('div');
+                titleSubtitleElement.innerHTML = `
+                    <h1 class="book-title-for-pdf">${bookTitleInput.value || 'Untitled Book'}</h1>
+                    <h2 class="book-subtitle-for-pdf">${bookSubtitleInput.value || ''}</h2>
+                `;
+                await captureAndAddContent(titleSubtitleElement, true, true);
+
+                // 3. Add Editor Playground Content Pages (With margins)
+                const editorPages = editorPlaygroundContainer.querySelectorAll('.editor-page');
+                for (const page of editorPages) {
+                    const pageBodyContentElement = page.querySelector('.page-body').cloneNode(true); // Clone only the body content
+
+                    pageBodyContentElement.querySelectorAll('.image-with-caption img').forEach(img => {
+                         img.style.maxWidth = '100%';
+                         img.style.height = 'auto';
+                         img.style.display = 'block';
+                    });
+                    pageBodyContentElement.querySelectorAll('.full-page-design').forEach(designBlock => {
+                        const backgroundImage = designBlock.style.backgroundImage;
+                        if (backgroundImage) {
+                            designBlock.style.backgroundSize = 'cover';
+                            designBlock.style.backgroundPosition = 'center';
+                            designBlock.style.backgroundRepeat = 'no-repeat';
+                            designBlock.style.width = '100%';
+                            designBlock.style.minHeight = '250mm'; // Ensure it spans visually for capture
+                            designBlock.style.margin = '0 auto';
+                            designBlock.style.pageBreakAfter = 'always';
+                        } else {
+                            designBlock.style.minHeight = '100mm';
+                        }
+                    });
+
+                    await captureAndAddContent(pageBodyContentElement, true, true);
+                }
+
+                // 4. Add Back Cover (Full bleed)
+                const backCoverImg = backCoverPreview.querySelector('img');
+                if (backCoverImg) {
+                    const coverElement = document.createElement('div');
+                    coverElement.innerHTML = `<img src="${backCoverImg.src}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
+                    await captureAndAddContent(coverElement, true, false);
+                }
+
+                // Finally, add page numbers to all generated pages (after they are all added)
+                for (let i = 1; i <= pdf.internal.getNumberOfPages(); i++) {
+                    pdf.setPage(i);
+                    // Page numbers are always included in PDF, using green accent color.
+                    addPageNumber(pdf, i, pdfWidth, pdfHeight, footerMargin, footerHeight, 'var(--accent-color)');
+                }
+
+
+                pdf.save(`${bookTitleInput.value.replace(/[^a-z0-9]/gi, '_') || 'ApolloBookProject'}.pdf`);
+
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Failed to generate PDF. Please check the console for more details.');
+            } finally {
+                document.querySelectorAll('.hide-for-pdf-temp').forEach(el => el.classList.remove('hide-for-pdf'));
+            }
+        });
+
+        // Helper function to add page numbers
+        function addPageNumber(pdf, pageNumber, pdfWidth, pdfHeight, footerMargin, footerHeight, containerColor) {
+            const text = `Page ${pageNumber}`;
+            const fontSize = 14;
+            const textColor = '#FFFFFF';
+            const effectiveContainerColor = containerColor || '#28a745'; // Default to green if not provided
+
+            pdf.setFontSize(fontSize);
+            const textWidth = pdf.getStringUnitWidth(text) * fontSize / pdf.internal.scaleFactor;
+            const paddingX = 3;
+            const paddingY = 2;
+            const containerWidth = textWidth + (2 * paddingX);
+            const containerHeight = fontSize / pdf.internal.scaleFactor + (2 * paddingY);
+
+            const containerX = pdfWidth - containerWidth - footerMargin;
+            const containerY = pdfHeight - containerHeight - footerMargin;
+
+            pdf.setFillColor(effectiveContainerColor); // Use the provided color
+            pdf.rect(containerX, containerY, containerWidth, containerHeight, 'F');
+
+            pdf.setTextColor(textColor);
+            const textX = containerX + paddingX;
+            const textY = containerY + paddingY + (fontSize / pdf.internal.scaleFactor * 0.75);
+            pdf.text(text, textX, textY);
+        }
+    });
+        /* --- script.js content ends here --- */
+    </script>
+</body>
+</html>
